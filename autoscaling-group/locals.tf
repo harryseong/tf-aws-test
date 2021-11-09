@@ -5,14 +5,19 @@ locals {
     Application = var.project_name
   }
 
+  ec2_ssm_iam_policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+
   asg_configs = {
     name                      = "test-autoscaling-group"
+    create_asg                = true
+    force_delete              = true
     min_size                  = 0
     max_size                  = 2
     desired_capacity          = 1
     wait_for_capacity_timeout = 0
-    health_check_type         = "EC2"
-    vpc_zone_identifier       = var.vpc_private_subnet_ids
+
+    vpc_zone_identifier = var.vpc_private_subnet_ids
+    health_check_type   = "EC2"
 
     initial_lifecycle_hooks = [
       {
@@ -35,15 +40,17 @@ locals {
   launch_template_configs = {
     lt_name                = "test-autoscaling-group-launch-template"
     description            = "Test autoscaling group launch template."
+    lt_version             = "$Latest"
     update_default_version = true
 
     use_lt    = true
     create_lt = true
 
-    image_id          = "ami-01cc34ab2709337aa" # Amazon Linux 2 AMI (HVM), SSD Volume Type
-    instance_type     = "t2.micro"
-    ebs_optimized     = true
-    enable_monitoring = true
+    image_id                  = "ami-01cc34ab2709337aa" # Amazon Linux 2 AMI (HVM), SSD Volume Type
+    instance_type             = "t2.micro"
+    iam_instance_profile_name = aws_iam_instance_profile.ec2_default_profile.id
+    ebs_optimized             = false
+    enable_monitoring         = true
 
     block_device_mappings = [
       {
@@ -75,7 +82,7 @@ locals {
     instance_market_options = {
       market_type = "spot"
       spot_options = {
-        block_duration_minutes = 60
+        block_duration_minutes = null
       }
     }
 
@@ -90,7 +97,7 @@ locals {
         delete_on_termination = true
         description           = "eth0"
         device_index          = 0
-        security_groups       = [var.vpc_default_sg_name]
+        security_groups       = [aws_security_group.asg_instance_sg.id]
       }
     ]
 

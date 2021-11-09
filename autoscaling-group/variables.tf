@@ -8,6 +8,11 @@ variable "project_name" {
   type        = string
 }
 
+variable "vpc_id" {
+  description = "VPC ID."
+  type        = string
+}
+
 variable "vpc_private_subnet_ids" {
   description = "Private subnet IDs."
   type        = list(string)
