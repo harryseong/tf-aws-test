@@ -12,17 +12,12 @@ variable "project_name" {
   type        = string
 }
 
-variable "vpc_id" {
-  description = "VPC ID."
+variable "domain_name" {
+  description = "Domain name of application. Ex: 'harryseong.com'"
   type        = string
 }
 
-variable "vpc_private_subnet_ids" {
-  description = "Private subnet IDs."
-  type        = list(string)
-}
-
-variable "vpc_default_sg_name" {
-  description = "Default VPC security group name."
+variable "codestarconnections_arn" {
+  description = "CodeStarConnections connection ARN."
   type        = string
 }

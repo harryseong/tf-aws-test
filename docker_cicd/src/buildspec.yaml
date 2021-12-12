@@ -1,0 +1,27 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      java: corretto11
+  pre_build:
+    commands:
+      - echo Logging in to Docker...
+      - DOCKER_USERNAME=$(aws ssm get-parameter --name "/harryseong.com/docker/cli/username" --query "Parameter.Value" --output text)
+      - aws ssm get-parameter --name "/harryseong.com/docker/cli/access_token" --with-decryption --query "Parameter.Value" --output text | docker login --username $DOCKER_USERNAME --password-stdin
+      - echo Running tests...
+      - mvn test 
+  build:
+    commands:
+      - echo Build started on `date`
+      - ls -l
+      - echo Building Java JAR...
+      - mvn package
+      - ls -l
+      - echo Building the Docker image...          
+      - docker build -t harryseong/template-microservice:0.0.3 .
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker image...
+      - docker push harryseong/template-microservice:0.0.3
