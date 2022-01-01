@@ -36,3 +36,13 @@ variable "codestarconnections_arn" {
   description = "Codestartconnections ARN for GitHub repository."
   type        = string
 }
+
+variable "docker_codepipeline_configs" {
+  description = "Map of Docker CodePipeline configs to setup CICD."
+  type = map(object({
+    git_repo        = string
+    git_branch      = string
+    image_repo_name = string
+    image_repo_tag  = string
+  }))
+}

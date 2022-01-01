@@ -19,9 +19,9 @@ phases:
       - mvn package
       - ls -l
       - echo Building the Docker image...          
-      - docker build -t harryseong/template-microservice:0.0.3 .
+      - docker build -t $IMAGE_REPO_NAME:$IMAGE_REPO_TAG .
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker image...
-      - docker push harryseong/template-microservice:0.0.3
+      - docker push $IMAGE_REPO_NAME:$IMAGE_REPO_TAG

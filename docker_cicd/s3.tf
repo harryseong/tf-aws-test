@@ -2,7 +2,7 @@ module "codepipeline_artifacts_s3_bucket" {
   source        = "terraform-aws-modules/s3-bucket/aws"
   create_bucket = true
   force_destroy = true
-  bucket        = "codepipeline-artifacts-${var.project_name}-${data.aws_region.current.name}"
+  bucket        = "codepipeline-artifacts-${var.microservice}-${data.aws_region.current.name}"
   acl           = "private"
   tags          = local.tags
 

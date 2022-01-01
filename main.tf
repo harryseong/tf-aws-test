@@ -16,10 +16,13 @@ module "autoscaling_group" {
 
 module "docker_cicd" {
   source   = "./docker_cicd"
-  for_each = local.create_docker_cicd ? toset(["test", "prod"]) : toset([])
+  for_each = local.create_docker_cicd ? var.docker_codepipeline_configs : {}
 
-  env                     = each.key
-  project_name            = var.project_name
-  domain_name             = var.domain_name
-  codestarconnections_arn = var.codestarconnections_arn
+  env          = "prod"
+  project_name = var.project_name
+  domain_name  = var.domain_name
+
+  microservice               = each.key
+  docker_codepipeline_config = each.value
+  codestarconnections_arn    = var.codestarconnections_arn
 }

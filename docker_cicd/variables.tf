@@ -21,3 +21,17 @@ variable "codestarconnections_arn" {
   description = "CodeStarConnections connection ARN."
   type        = string
 }
+
+variable "microservice" {
+  description = "Name of microservice to build and Dockerize."
+  type        = string
+}
+variable "docker_codepipeline_config" {
+  description = "Docker CodePipeline configs required for CICD."
+  type = object({
+    git_repo        = string
+    git_branch      = string
+    image_repo_name = string
+    image_repo_tag  = string
+  })
+}

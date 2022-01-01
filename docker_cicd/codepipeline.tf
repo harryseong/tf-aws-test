@@ -1,7 +1,7 @@
 # https://docs.aws.amazon.com/codepipeline/latest/userguide/reference-pipeline-structure.html#action-requirements
 
 resource "aws_codepipeline" "codepipeline" {
-  name     = "${var.project_name}-${var.env}-codepipeline"
+  name     = "${var.microservice}-${var.env}-codepipeline"
   role_arn = aws_iam_role.codepipeline_role.arn
   tags     = local.tags
 
@@ -22,8 +22,8 @@ resource "aws_codepipeline" "codepipeline" {
       output_artifacts = ["source_output"]
       configuration = {
         ConnectionArn    = var.codestarconnections_arn
-        FullRepositoryId = "harryseong/template-microservice"
-        BranchName       = var.env == "prod" ? "main" : var.env
+        FullRepositoryId = var.docker_codepipeline_config.git_repo
+        BranchName       = var.docker_codepipeline_config.git_branch
         DetectChanges    = true
       }
     }
