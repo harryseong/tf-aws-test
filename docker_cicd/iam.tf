@@ -133,6 +133,13 @@ resource "aws_iam_role_policy" "codebuild_policy" {
             "ssm:List*"
         ],
         "Resource": "*"
+    },
+    {
+        "Effect": "Allow",
+        "Action": [
+            "ecr:*"
+        ],
+        "Resource": "*"
     }
   ]
 }

@@ -9,6 +9,8 @@ phases:
       - echo Logging in to Docker...
       - DOCKER_USERNAME=$(aws ssm get-parameter --name "/harryseong.com/docker/cli/username" --query "Parameter.Value" --output text)
       - aws ssm get-parameter --name "/harryseong.com/docker/cli/access_token" --with-decryption --query "Parameter.Value" --output text | docker login --username $DOCKER_USERNAME --password-stdin
+      - echo Logging in to ECR...
+      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 552566233886.dkr.ecr.us-east-1.amazonaws.com
       - echo Running tests...
       - mvn test 
   build:
@@ -19,9 +21,12 @@ phases:
       - mvn package
       - ls -l
       - echo Building the Docker image...          
-      - docker build -t $IMAGE_REPO_NAME:$IMAGE_REPO_TAG .
+      - docker build -t $DOCKER_REPO/$IMAGE_NAME:$IMAGE_REPO_TAG .
   post_build:
     commands:
       - echo Build completed on `date`
-      - echo Pushing the Docker image...
-      - docker push $IMAGE_REPO_NAME:$IMAGE_REPO_TAG
+      - echo Pushing the Docker image to Docker Hub...
+      - docker push $DOCKER_REPO/$IMAGE_NAME:$IMAGE_REPO_TAG
+      - echo Pushing the Docker image to ECR...
+      - docker tag $DOCKER_REPO/$IMAGE_NAME:$IMAGE_REPO_TAG 552566233886.dkr.ecr.us-east-1.amazonaws.com/harryseong.com:latest
+      - docker push 552566233886.dkr.ecr.us-east-1.amazonaws.com/harryseong.com:latest

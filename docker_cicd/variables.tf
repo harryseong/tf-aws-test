@@ -29,9 +29,11 @@ variable "microservice" {
 variable "docker_codepipeline_config" {
   description = "Docker CodePipeline configs required for CICD."
   type = object({
-    git_repo        = string
-    git_branch      = string
-    image_repo_name = string
-    image_repo_tag  = string
+    git_repo       = string
+    git_branch     = string
+    docker_repo    = string
+    ecr_repo       = string
+    image_name     = string
+    image_repo_tag = string
   })
 }

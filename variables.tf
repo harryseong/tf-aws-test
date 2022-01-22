@@ -40,9 +40,11 @@ variable "codestarconnections_arn" {
 variable "docker_codepipeline_configs" {
   description = "Map of Docker CodePipeline configs to setup CICD."
   type = map(object({
-    git_repo        = string
-    git_branch      = string
-    image_repo_name = string
-    image_repo_tag  = string
+    git_repo       = string
+    git_branch     = string
+    docker_repo    = string
+    ecr_repo       = string
+    image_name     = string
+    image_repo_tag = string
   }))
 }

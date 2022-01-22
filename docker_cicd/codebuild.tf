@@ -28,8 +28,18 @@ resource "aws_codebuild_project" "codebuild_project" {
     }
 
     environment_variable {
-      name  = "IMAGE_REPO_NAME"
-      value = var.docker_codepipeline_config.image_repo_name
+      name  = "DOCKER_REPO"
+      value = var.docker_codepipeline_config.docker_repo
+    }
+
+    environment_variable {
+      name  = "ECR_REPO"
+      value = var.docker_codepipeline_config.ecr_repo
+    }
+
+    environment_variable {
+      name  = "IMAGE_NAME"
+      value = var.docker_codepipeline_config.image_name
     }
 
     environment_variable {

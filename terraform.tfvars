@@ -9,9 +9,11 @@ codestarconnections_arn        = "arn:aws:codestar-connections:us-east-1:5525662
 
 docker_codepipeline_configs = {
   "template-microservice" = {
-    git_repo        = "harryseong/template-microservice"
-    git_branch      = "main"
-    image_repo_name = "harryseong/template-microservice"
-    image_repo_tag  = "0.0.4"
+    git_repo       = "harryseong/template-microservice"
+    git_branch     = "main"
+    docker_repo    = "harryseong"
+    ecr_repo       = "harryseong.com"
+    image_name     = "template-microservice"
+    image_repo_tag = "0.1.1"
   }
 }
