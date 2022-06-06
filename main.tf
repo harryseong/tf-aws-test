@@ -1,6 +1,6 @@
 locals {
   create_autoscaling_group = false
-  create_docker_cicd       = true
+  create_docker_cicd       = false
 }
 
 module "autoscaling_group" {
