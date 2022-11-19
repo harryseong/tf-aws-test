@@ -1,6 +1,7 @@
 locals {
   create_autoscaling_group = false
   create_docker_cicd       = false
+  create_eks               = false
 }
 
 module "autoscaling_group" {
@@ -25,4 +26,13 @@ module "docker_cicd" {
   microservice               = each.key
   docker_codepipeline_config = each.value
   codestarconnections_arn    = var.codestarconnections_arn
+}
+
+module "eks" {
+  source = "./eks"
+  count  = local.create_eks ? 1 : 0
+
+  env                    = "prod"
+  project_name           = var.project_name
+  vpc_private_subnet_ids = data.aws_subnet_ids.private.ids
 }
